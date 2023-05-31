@@ -9,7 +9,7 @@ qemu-system-x86_64 \
     -enable-kvm \
     -machine q35 \
     -cpu host -smp cores=4,threads=1 \
-    -m 20G \
+    -m 8G \
     -serial mon:stdio \
     -object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0 \
     -net nic,model=virtio -net user,hostfwd=tcp::10041-:22,hostfwd=tcp::8015-:8015,hostfwd=tcp::8443-:443,hostfwd=tcp::8080-:80 \
