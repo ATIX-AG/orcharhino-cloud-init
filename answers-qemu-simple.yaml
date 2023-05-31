@@ -1,0 +1,27 @@
+or_admin_email: loeser@atix.de
+or_admin_password: linux
+or_compute_resource_providers:
+- libvirt
+or_config_management_systems:
+- ansible
+or_dhcp_gateway: 10.0.2.2
+or_dhcp_interface: eth0
+or_dhcp_nameservers: 10.0.2.15
+or_dhcp_range_from: 10.0.2.16
+or_dhcp_range_to: 10.0.2.254
+or_dns_forwarders: 10.0.2.3
+or_dns_interface: eth0
+or_dns_reverse: 2.0.10.in-addr.arpa
+or_dns_ttl: '86400'
+or_http_proxy_scheme: http
+or_location: MUC
+or_organization: ATIX
+or_plugins:
+- acd
+- discovery
+- webhooks
+or_sec_int_net:
+- 10.0.2.0/24
+- 10.0.2.0/24
+or_tftp_enabled: 'true'
+or_tuning_option: default
