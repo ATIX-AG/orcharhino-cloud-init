@@ -11,7 +11,7 @@ if ! [[ "$dist" =~ ^(alma|rocky)$ ]]; then
 fi
 
 imgfile="$dist-generic-image.qcow2"
-imgsnapfile="$dist-snap.qcow2"
+imgsnapfile="snap.qcow2"
 
 qemu-img create \
     -f qcow2 \

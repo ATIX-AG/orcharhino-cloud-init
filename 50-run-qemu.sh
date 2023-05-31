@@ -3,14 +3,7 @@
 # Author Jan Löser <loeser@atix.de>
 # Published under the GNU Public Licence 3
 
-dist=$1
-
-if ! [[ "$dist" =~ ^(alma|rocky)$ ]]; then
-    echo "Usage: $(basename $0) alma|rocky"
-    exit 1
-fi
-
-imgfile="$dist-snap.qcow2"
+imgfile="snap.qcow2"
 
 qemu-system-x86_64 \
     -enable-kvm \
