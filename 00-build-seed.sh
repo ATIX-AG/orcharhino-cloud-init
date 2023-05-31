@@ -50,7 +50,7 @@ write_files:
     [Unit]
     Description=orcharhino Installation Wrapper Service
     After=cloud-final.service
-    ConditionPathExists=!/etc/orcharhino-installer/answers.yaml
+    ConditionFileNotEmpty=!/etc/orcharhino-installer/answers.yaml
 
     [Service]
     Type=oneshot
