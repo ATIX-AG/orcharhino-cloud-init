@@ -8,9 +8,10 @@ rootpw="linux"
 
 sshpubfile=$(ls -1 $HOME/.ssh/id_*.pub | head -n1)
 oskfile="$1"
+answersfile="$2"
 
 if [[ "x$oskfile" == "x" ]]; then
-    echo "Usage: $(basename $0) OSK-FILE"
+    echo "Usage: $(basename $0) OSK-FILE [ANSWERS-FILE]"
     exit 1
 fi
 
@@ -25,6 +26,14 @@ if [[ -r "$sshpubfile" ]]; then
     ssh_authorized_keys: $(cat $sshpubfile)"
 fi
 OSK_B64=$(base64 -w0 $oskfile)
+if [[ -r "$answersfile" ]]; then
+    ANSWERS_FILE="
+- encoding: b64
+  content: $(base64 -w0 $answersfile)
+  owner: root:root
+  path: /root/answers.yaml
+  permissions: '0644'"
+fi
 FQDN=$fqdn
 
 cat > meta-data << EOF
@@ -45,10 +54,10 @@ write_files:
   content: ${OSK_B64}
   owner: root:root
   path: /root/or-subscription-key.osk
-  permissions: '0644'
+  permissions: '0644' $ANSWERS_FILE
 - content: |
     [Unit]
-    Description=orcharhino Installation Wrapper Service
+    Description=orcharhino Installation Wrapper Service (WebUI)
     After=cloud-final.service
     ConditionFileNotEmpty=!/etc/orcharhino-installer/answers.yaml
 
@@ -61,10 +70,26 @@ write_files:
     TTYPath=/dev/tty2
     TTYReset=yes
     TTYVHangup=yes
+  path: /etc/systemd/system/or-installation-webui.service
+- content: |
+    [Unit]
+    Description=orcharhino Installation Wrapper Service
+    After=cloud-final.service
+
+    [Service]
+    Type=oneshot
+    ExecStartPre=/usr/bin/install -D /root/answers.yaml /etc/orcharhino-installer/answers.yaml
+    ExecStartPre=/usr/bin/chvt 2
+    ExecStart=/bin/bash /root/install_orcharhino.sh -y /root/or-subscription-key.osk -- --skip-gui
+    StandardInput=tty
+    StandardOutput=journal+console
+    TTYPath=/dev/tty2
+    TTYReset=yes
+    TTYVHangup=yes
   path: /etc/systemd/system/or-installation.service
 runcmd:
   - curl -o /root/install_orcharhino.sh https://acc-pub.atix.de/orcharhino_installer/latest/install_orcharhino.sh
-  - systemctl start --no-block or-installation.service
+  - test -e /root/answers.yaml && systemctl start --no-block or-installation.service || systemctl start --no-block or-installation-webui.service
   - setenforce 0
 EOF
 
