@@ -22,3 +22,10 @@ $ ./30-create-snapshot.sh alma
 $ ./50-run-qemu.sh
 ```
 Check the tty output for progress.
+
+## Connections (QEMU)
+
+Available ports for connection:
+- SSH: 10022 (`$ ssh -p 10022 root@localhost`)
+- Web installer: 18015 (http://localhost:18015)
+- Web UI: 8443 (https://localhost:8443)
