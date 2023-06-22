@@ -19,7 +19,7 @@ the URL.
 To start local QEMU instance without interactive installer, run:
 ```
 $ ./10-get-generic-image.sh alma
-$ ./20-build-seed.sh ~/alma8.osk ./answers-qemu-simple.yaml
+$ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
 $ ./30-create-snapshot.sh alma
 $ ./50-run-qemu.sh
 ```
