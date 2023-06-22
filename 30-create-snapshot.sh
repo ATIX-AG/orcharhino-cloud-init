@@ -5,8 +5,8 @@
 
 dist=$1
 
-if ! [[ "$dist" =~ ^(alma|rocky)$ ]]; then
-    echo "Usage: $(basename $0) alma|rocky"
+if ! [[ "$dist" =~ ^(alma|rocky|oracle|rhel)$ ]]; then
+    echo "Usage: $(basename $0) alma|rocky|oracle|rhel"
     exit 1
 fi
 
