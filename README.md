@@ -27,7 +27,7 @@ Check the tty output for progress.
 
 Available ports for connection:
 - SSH: 10022 (`$ ssh -p 10022 root@localhost`)
-- Web UI installer: 18015 (http://localhost:18015)
+- Web UI installer: 8015 (http://localhost:8015)
 - Web UI: 8443 (https://localhost:8443)
 
 
