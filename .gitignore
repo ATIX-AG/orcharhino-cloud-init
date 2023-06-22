@@ -1,5 +1,6 @@
 user-data
 meta-data
-seed.iso
+*.iso
 images/*
 *.osk
+answers*.yaml
