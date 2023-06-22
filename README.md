@@ -58,3 +58,15 @@ $ scp ./seed.iso root@192.168.145.4:/vmfs/volumes/57f5ee0e-329bfdc1-2056-002590e
 Create a VM in VMware (with at least minimal system requirements) and add:
 - "Existing Hard Disk" using `alma8-uefi-vmware.vmdk`
 - "CD/DVD Drive" using `seed-alma8-installer.iso`
+
+
+# AWS EC2
+
+Generate `user-data` file and upload it under "EC2 > Instances > Launch an
+instance > Advanced details > User data" when creating a new instance:
+
+```
+$ ./20-build-seed.sh ~/alma8.osk
+$ ls -1 ./user-data
+./user-data
+```
