@@ -2,6 +2,24 @@ orcharhino Test Instance (cloud-init)
 
 [[_TOC_]]
 
+
+# General
+
+Find more information about variables in `./answers-default.yaml` here:
+https://git.atix.de/ansible/roles/or_installation/-/blob/main/README.md#answersyaml-file-variables
+
+For automatic installation of orcharhino, invoke `./20-build-seed.sh` with
+'answers.yaml' file parameter:
+```
+$ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
+```
+
+To launch web UI installer, do not provide 'answers.yaml' file parameter:
+```
+$ ./20-build-seed.sh ~/alma8.osk
+```
+
+
 # QEMU
 
 To start local QEMU instance with interactive orcharhino web UI installer, run:
@@ -51,13 +69,13 @@ Clone: 100% done.
 
 Generate seed ISO and copy it to ESXi host:
 ```
-$ ./20-build-seed.sh ~/alma8.osk
-$ scp ./seed.iso root@192.168.145.4:/vmfs/volumes/57f5ee0e-329bfdc1-2056-002590e5da3a/cloud-init-images/seed-alma8-installer.iso
+$ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
+$ scp ./seed.iso root@192.168.145.4:/vmfs/volumes/57f5ee0e-329bfdc1-2056-002590e5da3a/cloud-init-images/seed-alma8.iso
 ```
 
 Create a VM in VMware (with at least minimal system requirements) and add:
 - "Existing Hard Disk" using `alma8-uefi-vmware.vmdk`
-- "CD/DVD Drive" using `seed-alma8-installer.iso`
+- "CD/DVD Drive" using `seed-alma8.iso`
 
 
 # AWS EC2
@@ -66,7 +84,7 @@ Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
 
 ```
-$ ./20-build-seed.sh ~/alma8.osk
+$ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
 $ ls -1 ./user-data
 ./user-data
 ```
