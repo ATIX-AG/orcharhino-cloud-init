@@ -2,8 +2,7 @@ or_admin_email: loeser@atix.de
 or_admin_password: linux
 or_location: MUC
 or_organization: ATIX
-or_sec_int_net:
-- 10.0.2.0/24
+or_sec_int_net: []
 #or_tuning_option: default
 #or_compute_resource_providers:
 #- azure
