@@ -11,6 +11,6 @@ enable_vpn_gateway = false
 
 ec2_name = "orcharino-on-aws"
 ec2_image = "ami-0cfdf91ea903a6111" #Rocky8 
-ec2_instance_type = "t3a.xlarge" #4cores 16gb ram
+ec2_instance_type = "t3a.medium" #4cores 16gb ram
 ec2_key_name = "orcharino"
 ec2_monitoring = false

@@ -1,5 +1,5 @@
 locals {
-  user_data = file("../user-data")
+  user_data = file(var.file_path)
 }
 
 #VPC
