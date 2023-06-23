@@ -1,4 +1,10 @@
-# VPC
+locals {
+  user_data = <<-EOT
+          <<<<< #paste here
+  EOT
+}
+
+#VPC
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
@@ -62,6 +68,8 @@ module "ec2_instance" {
       volume_size = 30
     },
   ]
+
+  user_data_base64 = base64encode(local.user_data)
 
   tags = {
     Terraform   = "true"
