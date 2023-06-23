@@ -4,7 +4,7 @@
 # Published under the GNU Public Licence 3
 
 fqdn="rhino.atix-training.de"
-rootpw="linux"
+rootpw="K2!3s3kr#a@fks44y"
 
 sshpubfile=$(ls -1 $HOME/.ssh/id_*.pub | head -n1)
 oskfile="$1"
