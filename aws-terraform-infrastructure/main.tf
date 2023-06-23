@@ -1,7 +1,5 @@
 locals {
-  user_data = <<-EOT
-          <<<<< #paste here
-  EOT
+  user_data = file("../user-data")
 }
 
 #VPC
