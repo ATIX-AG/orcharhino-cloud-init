@@ -49,6 +49,55 @@ Available ports for connection:
 - Web UI: 8443 (https://localhost:8443)
 
 
+# Proxmox
+
+Provide the image on Proxmox server (a direct download on the server is probably
+faster) and `user-data`/`meta-data`:
+```
+$ ./10-get-generic-image.sh alma
+$ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
+$ scp ./images/alma-generic-image.qcow2 proxmox:/var/lib/vz/images/
+$ scp ./{user,meta}-data proxmox:/var/lib/vz/snippets/
+```
+
+Create & start the VM:
+```
+$ ssh proxmox
+root@proxmox:~# qm create 125 --memory 16384 --net0 virtio,bridge=vmbr0,tag=168 --scsihw virtio-scsi-pci --name or-alma8
+root@proxmox:~# qm set 125 --scsi0 local-lvm:0,import-from=/var/lib/vz/images/alma-generic-image.qcow2
+...
+root@proxmox:~# qm set 125 --ide2 local-lvm:cloudinit
+root@proxmox:~# qm set 125 --cicustom "meta=local:snippets/meta-data"
+root@proxmox:~# qm set 125 --cicustom "user=local:snippets/user-data"
+root@proxmox:~# qm set 125 --boot order=scsi0
+root@proxmox:~# qm set 125 --serial0 socket --vga serial0
+root@proxmox:~# qm start 125
+root@proxmox:~# qm terminal 125
+...
+AlmaLinux 8.8 (Sapphire Caracal)
+Kernel 4.18.0-477.10.1.el8_8.x86_64 on an x86_64
+
+Activate the web console with: systemctl enable --now cockpit.socket
+
+rhino login:
+```
+Installation output can be followed with `journalctl -f`.
+
+More information: https://proxmox-noris.corp.atix.de/pve-docs/pve-admin-guide.html#qm_cloud_init
+
+Alternatively, copy `seed.iso` to the Proxmox server and add this ISO as virtual
+CD/DVD to the VM.
+
+> **IMPORTANT**
+> Sometimes user-/meta-data wasn't provided correctly (root login not working,
+> no hostname set)! After re-running `qm set 125 --cicustom ...` commands it
+> worked.
+
+> **IMPORTANT**
+> Do not trust `qm cloudinit dump 125 user` output. This does not print the
+> expected output.
+
+
 # VMware
 
 Convert the image locally and copy it to the ESXi host:
