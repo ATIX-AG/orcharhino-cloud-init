@@ -32,6 +32,11 @@ $ FLAVOR=foreman ./20-build-seed.sh
 > **NOTE**
 > Providing an 'answers.yaml' file is currently not supported.
 
+For automatic installation of Foreman with Katello, run:
+```
+$ FLAVOR=foreman-katello ./20-build-seed.sh
+```
+
 
 # QEMU
 

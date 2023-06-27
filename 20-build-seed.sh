@@ -13,8 +13,9 @@ answersfile="$2"
 
 if [[ "$flavor" == "orcharhino" ]]; then
     if [[ "x$oskfile" == "x" ]]; then
-        echo "Usage:                $(basename $0) OSK-FILE [ANSWERS-FILE]"
-        echo "       FLAVOR=foreman $(basename $0)"
+        echo "Usage:                        $(basename $0) OSK-FILE [ANSWERS-FILE]"
+        echo "       FLAVOR=foreman         $(basename $0)"
+        echo "       FLAVOR=foreman-katello $(basename $0)"
         exit 1
     fi
 
