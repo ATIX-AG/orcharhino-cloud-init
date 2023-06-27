@@ -8,6 +8,9 @@ orcharhino Test Instance (cloud-init)
 Find more information about variables in `./answers-default.yaml` here:
 https://git.atix.de/ansible/roles/or_installation/-/blob/main/README.md#answersyaml-file-variables
 
+
+## orcharhino
+
 For automatic installation of orcharhino, invoke `./20-build-seed.sh` with
 'answers.yaml' file parameter:
 ```
@@ -17,6 +20,21 @@ $ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
 To launch web UI installer, do not provide 'answers.yaml' file parameter:
 ```
 $ ./20-build-seed.sh ~/alma8.osk
+```
+
+
+## Foreman
+
+For automatic installation of Foreman, run:
+```
+$ FLAVOR=foreman ./20-build-seed.sh
+```
+> **NOTE**
+> Providing an 'answers.yaml' file is currently not supported.
+
+For automatic installation of Foreman with Katello, run:
+```
+$ FLAVOR=foreman-katello ./20-build-seed.sh
 ```
 
 

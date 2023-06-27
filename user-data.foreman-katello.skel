@@ -1,0 +1,41 @@
+#cloud-config
+users:
+  - name: root
+    shell: /bin/bash
+    lock_passwd: false
+    ssh_pwauth: yes
+    hashed_passwd: $HASHED_PASSWD $SSH_AUTHORIZED_KEYS
+write_files:
+- content: |
+    #!/bin/bash
+    DEFAULT_INTERFACE=\$(ip route list | awk '/^default/ {print \$5}')
+    IP_ADDRESS=\$(ip addr show "\${DEFAULT_INTERFACE}" | grep 'inet ' | sed 's#.*inet \(.*\)/.*#\1#')
+    echo "\${IP_ADDRESS} ${FQDN} ${FQDN%%.*}" >> /etc/hosts
+
+    dnf -y install https://yum.puppet.com/puppet7-release-el-8.noarch.rpm
+    dnf -y install https://yum.theforeman.org/releases/3.7/el8/x86_64/foreman-release.rpm
+    dnf -y install https://yum.theforeman.org/katello/4.9/katello/el8/x86_64/katello-repos-latest.rpm
+    dnf -y install https://yum.puppet.com/puppet7-release-el-8.noarch.rpm
+    dnf -y module enable foreman:el8 katello:el8 pulpcore:el8
+    dnf -y install foreman-installer-katello
+  chmod: 0744
+  path: /root/pre_install_foreman.sh
+- content: |
+    [Unit]
+    Description=Foreman Installation Wrapper Service
+    After=cloud-final.service
+
+    [Service]
+    Type=oneshot
+    ExecStartPre=/usr/bin/chvt 2
+    ExecStartPre=/bin/bash /root/pre_install_foreman.sh
+    ExecStart=/usr/sbin/foreman-installer --scenario katello --tuning development
+    StandardInput=tty
+    StandardOutput=journal+console
+    TTYPath=/dev/tty2
+    TTYReset=yes
+    TTYVHangup=yes
+  path: /etc/systemd/system/foreman-installation.service
+runcmd:
+  - systemctl start --no-block foreman-installation.service
+  - setenforce 0

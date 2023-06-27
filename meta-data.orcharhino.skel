@@ -1,0 +1,2 @@
+instance-id: ${FQDN%%.*}
+local-hostname: $FQDN
