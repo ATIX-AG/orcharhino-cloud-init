@@ -3,21 +3,37 @@ orcharhino Test Instance (cloud-init)
 [[_TOC_]]
 
 
-# General
+# Introduction
 
-Find more information about variables in `./answers-default.yaml` here:
-https://git.atix.de/ansible/roles/or_installation/-/blob/main/README.md#answersyaml-file-variables
+This repository provides convenient ways to install orcharhino or Foreman
+(+Katello) on various virtualization platforms including plain QEMU using
+[Cloud-Init](https://cloudinit.readthedocs.io/en/latest/).
+
+For orcharhino, an orcharhino subscription key (OSK) file is mandatory that
+matches the desired host OS ([Subscription Keys for
+testing](https://atix.atlassian.net/wiki/spaces/AXCONS/pages/265027585/Subscription+Keys+for+testing)).
+This is not needed for Foreman (+Katello) installation.
+
+For orcharhino, an "answers" file is optional that configures the installer.
+This allows an automatic installation without manual interaction in the web UI
+installer.
+This is not needed for Foreman (+Katello) installation.
+
+The output of the installation process can be viewed on /dev/tty2 and the
+system's journal (`journalctl`).
 
 
 ## orcharhino
 
 For automatic installation of orcharhino, invoke `./20-build-seed.sh` with
-'answers.yaml' file parameter:
+answers file parameter:
 ```
 $ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
 ```
+Find more information about variables used in `./answers-default.yaml` [here](
+https://git.atix.de/ansible/roles/or_installation/-/blob/main/README.md#answersyaml-file-variables)
 
-To launch web UI installer, do not provide 'answers.yaml' file parameter:
+To launch web UI installer, do not provide answers file parameter:
 ```
 $ ./20-build-seed.sh ~/alma8.osk
 ```
@@ -30,7 +46,7 @@ For automatic installation of Foreman, run:
 $ FLAVOR=foreman ./20-build-seed.sh
 ```
 > **NOTE**
-> Providing an 'answers.yaml' file is currently not supported.
+> Providing an answers file is currently not supported.
 
 For automatic installation of Foreman with Katello, run:
 ```
