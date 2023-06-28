@@ -27,7 +27,6 @@ if [[ "$flavor" == "orcharhino" ]]; then
     fi
 
     if [[ -r "$answersfile" ]]; then
-        echo "b"
         ANSWERS_FILE="
 - encoding: b64
   content: $(base64 -w0 $answersfile)
