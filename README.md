@@ -99,15 +99,15 @@ Prerequisites:
 
 To deploy this terraform code cd into the aws-terraform-infrastructure folder and do the following steps:
 
-$ terraform init  - to initialize the terraform working directory and download all required modules
+- `terraform init`  - to initialize the terraform working directory and download all required modules
 
-$ terraform plan  - to print out the plan of what will be deployed
+- `terraform plan`  - to print out the plan of what will be deployed
 
-$ terraform apply - confirm the deployment by typing yes when prompted. Terraform will create the VPC, security group, and EC2 instance based on the provided configuration.
+- `terraform apply` - confirm the deployment by typing yes when prompted. Terraform will create the VPC, security group, and EC2 instance based on the provided configuration.
 
 To remove the deployed infrastructure and clean up resources, use the following command:
 
-$ terraform destroy
+- `terraform destroy`
 
 All the required variables are stored in the terraform.tfvars file. Currently it will deploy EC2 instance called orcharino-on-aws running on Rocky8 Linux with the hardware specifications of 16gb RAM and 4 vcpu (t3a.xlarge).
 
