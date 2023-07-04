@@ -88,3 +88,22 @@ $ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
 $ ls -1 ./user-data
 ./user-data
 ```
+
+# How to deploy AWS Infrastructure
+
+This repository contains Terraform code for deploying an AWS Virtual Private Cloud (VPC), Security Group (currently all ports open), and an EC2 instance with userdata from the previous step.
+
+Prerequisites:
+- Terraform installed on your local machine
+- AWS Credentials with appropriate permissions
+
+To deploy this terraform code cd into the aws-terraform-infrastructure folder and do the following steps:
+
+$ terraform init  - to initialize the terraform working directory and download all required modules, then
+
+$ terraform plan  - to print out the plan of what will code do
+
+$ terraform apply - confirm the deployment by typing yes when prompted. Terraform will create the VPC, security group, and EC2 instance based on the provided configuration.
+
+
+
