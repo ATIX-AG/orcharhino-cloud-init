@@ -171,3 +171,41 @@ $ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
 $ ls -1 ./user-data
 ./user-data
 ```
+
+
+## Deploy AWS Infrastructure via Terraform
+
+This repository contains Terraform code for deploying an AWS Virtual Private
+Cloud (VPC), Security Group (currently all ports open), and an EC2 instance with
+user data from the previous step. AWS Terraform public modules are used
+(https://github.com/terraform-aws-modules).
+
+Prerequisites:
+- Terraform installed on your local machine
+- AWS Credentials with appropriate permissions
+- Generated `./user-data` file (see above)
+
+To deploy this Terraform code, change directory into the
+`./aws-terraform-infrastructure` folder and run the following steps:
+
+```
+$ terraform init   # to initialize the Terraform working directory and download all required modules
+$ terraform plan   # to print out the plan of what will be deployed
+$ terraform apply  # confirm the deployment by typing yes when prompted; Terraform will create the VPC, security group, and EC2 instance based on the provided configuration
+```
+
+To remove the deployed infrastructure and clean up resources, use the following
+command:
+
+```
+terraform destroy
+```
+
+All the required variables are stored in `terraform.tfvars`. Currently it
+will deploy EC2 instance called `orcharino-on-aws` running on Rocky8 Linux with
+the hardware specifications of 16GB RAM and 4 vCPU (`t3a.xlarge`).
+
+> **NOTE**
+> EC2 instance will require a ssh key called 'orcharino', be sure to
+> create the key with the same name in your AWS account before deploying the
+> instance.
