@@ -6,7 +6,7 @@ orcharhino Test Instance (cloud-init)
 # Introduction
 
 This repository provides convenient ways to install orcharhino or Foreman
-(+Katello) on various virtualization platforms including plain QEMU using
+(+Katello) on various virtualization platforms (including plain QEMU) using
 [Cloud-Init](https://cloudinit.readthedocs.io/en/latest/).
 
 For orcharhino, an orcharhino subscription key (OSK) file is mandatory that
@@ -22,6 +22,11 @@ This is not needed for Foreman (+Katello) installation.
 The output of the installation process can be viewed on /dev/tty2 and the
 system's journal (`journalctl`).
 
+Use [or-content-setup](https://git.atix.de/janloe/or-content-setup) to fill your
+brand new orcharhino instance with content.
+
+
+# Preparations
 
 ## orcharhino
 
@@ -30,8 +35,10 @@ answers file parameter:
 ```
 $ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
 ```
-Find more information about variables used in `./answers-default.yaml` [here](
+Find more information about variables used in `./answers-default.yaml` at
+[or_installation](
 https://git.atix.de/ansible/roles/or_installation/-/blob/main/README.md#answersyaml-file-variables)
+role.
 
 To launch web UI installer, do not provide answers file parameter:
 ```
