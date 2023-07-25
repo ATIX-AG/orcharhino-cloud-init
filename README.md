@@ -213,11 +213,27 @@ command:
 terraform destroy
 ```
 
-All the required variables are stored in `terraform.tfvars`. Currently it
-will deploy EC2 instance called `orcharino-on-aws` running on Rocky8 Linux with
-the hardware specifications of 16GB RAM and 4 vCPU (`t3a.xlarge`).
+To remove the deployed infrastructure and clean up resources, use the following command:
 
-> **NOTE**
-> EC2 instance will require a ssh key called 'orcharino', be sure to
-> create the key with the same name in your AWS account before deploying the
-> instance.
+- `terraform destroy`
+
+All the sample variables are stored in the terraform.tfvars.skel file. Currently it will deploy EC2 instance called orcharino-on-aws running on Rocky8 Linux with the hardware specifications of 16gb RAM and 4 vcpu (t3a.xlarge).
+To deploy the sample configuration copy the contents from the terraform.tfvars.skel file and create terraform.tfvars and paste it there, or you can alter the variables with your values.
+
+The user and meta data generated for specific operating system should be used only on that OS. The list of AMI's (Amazon machine images) can be found on AWS Marketplace. For example: Rocky Linux 8 - https://aws.amazon.com/marketplace/pp/prodview-2otariyxb3mqu
+
+NOTE: EC2 instance will require a ssh key called 'orcharino', be sure to create the key with the same name in your AWS account before deploying the instance.
+
+# How to deploy Orcharhino on Proxmox
+
+Generate user-data and metadata just like in the previous steps, but make sure you are using the correct OSK for the correct operating system.
+
+```
+$ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
+```
+After the user-data and meta-data are generated cd into the terraform-proxmox folder. Then go into the terraform.tfvars file and add your variables for accessing the proxmox server and your vm.
+Now all that is left is to type the ussual terraform commands and terraform will automatically fetch the user-data and meta-data that we have generated.
+- `terraform init`
+- `terraform plan`
+- `terraform apply`
+- `terraform destroy`

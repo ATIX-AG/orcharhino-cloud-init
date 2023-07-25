@@ -75,6 +75,19 @@ module "ec2_instance" {
   }
 }
 
+# resource "aws_route53_zone" "primary" {
+#   name = "example.com" # Replace with your domain name
+  
+# }
+
+# resource "aws_route53_record" "orcharhino" {
+#   zone_id = aws_route53_zone.primary.zone_id
+#   name    = "www.example.com"
+#   type    = "A"
+#   ttl     = 300
+#   records = ["IP-ADDRESS"]
+# }
+
 # additional /var storage
 
 

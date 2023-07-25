@@ -1,0 +1,6 @@
+---
+include:
+  - project: "Terraform/ci-templates"
+    file: "terraform.yaml"
+    ref: "main"
+...

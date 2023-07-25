@@ -1,8 +1,7 @@
 variable "file_path" {
-  description = "Relative path to the file"
+  description = "Path to the user-data file"
   default     = "../user-data"
 }
-
 variable "vpc_azs" {}
 variable "vpc_name" {}
 variable "vpc_cidr" {}
