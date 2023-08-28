@@ -26,7 +26,7 @@ rootpw="linux"
 sshpubfile=$(ls -1 $HOME/.ssh/id_*.pub | head -n1)
 orversion=
 
-while getopts "fhk:o:n:a:v:p:s:" o; do
+while getopts "fhko:n:a:v:p:s:" o; do
     case "${o}" in
         h)
             usage
