@@ -3,22 +3,67 @@
 # Author Jan Löser <loeser@atix.de>
 # Published under the GNU Public Licence 3
 
+usage() {
+    echo "Usage:  $(basename $0) -o OSK [-n FQDN] [-a ANSWERSFILE] [-v VERSION] [-p PASS] [-s SSHPUBKEY]"
+    echo "        $(basename $0) -f [-n FQDN]"
+    echo "        $(basename $0) -k [-n FQDN]"
+    echo
+    echo "Options:"
+    echo "  -o           Path to OSK file."
+    echo "  -n           Host FQDN (default: \"$fqdn\")."
+    echo "  -a           Path to YAML answers file."
+    echo "  -v           Orcharhino version (e.g. \"6.5\"; latest by default)"
+    echo "  -p           Root user password (default: \"$rootpw\")."
+    echo "  -s           Path to SSH public key file (default: \"$(ls -1 $HOME/.ssh/id_*.pub | head -n1)\")."
+    echo "  -f           Install Foreman."
+    echo "  -k           Install Foreman/Katello."
+    echo "  -h           This help."
+    exit 0
+}
+
 fqdn="rhino.atix-training.de"
 rootpw="linux"
-flavor="${FLAVOR:-orcharhino}"
-
 sshpubfile=$(ls -1 $HOME/.ssh/id_*.pub | head -n1)
-oskfile="$1"
-answersfile="$2"
+orversion=
+
+while getopts "fhk:o:n:a:v:p:s:" o; do
+    case "${o}" in
+        h)
+            usage
+            ;;
+        o)
+            oskfile="${OPTARG}"
+            flavor="orcharhino"
+            ;;
+        n)
+            fqdn="${OPTARG}"
+            ;;
+        a)
+            answersfile="${OPTARG}"
+            ;;
+        v)
+            orversion="${OPTARG}"
+            ;;
+        p)
+            rootpw="${OPTARG}"
+            ;;
+        s)
+            sshpubfile="${OPTARG}"
+            ;;
+        f)
+            flavor="foreman"
+            ;;
+        k)
+            flavor="foreman-katello"
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
 
 if [[ "$flavor" == "orcharhino" ]]; then
-    if [[ "x$oskfile" == "x" ]]; then
-        echo "Usage:                        $(basename $0) OSK-FILE [ANSWERS-FILE]"
-        echo "       FLAVOR=foreman         $(basename $0)"
-        echo "       FLAVOR=foreman-katello $(basename $0)"
-        exit 1
-    fi
-
     if ! file -bi "$oskfile" | grep -q "text/xml"; then
         echo "Invalid OSK file '$oskfile'"
         exit 1
@@ -41,6 +86,9 @@ if [[ -r "$sshpubfile" ]]; then
     ssh_authorized_keys: $(cat $sshpubfile)"
 fi
 FQDN=$fqdn
+if [[ ! "x$orversion" == "x" ]]; then
+    OR_VERSION_OPTION="--or-version=$orversion"
+fi
 
 eval "cat > meta-data <<EOF
 $(<./meta-data.$flavor.skel)
