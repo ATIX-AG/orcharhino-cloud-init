@@ -89,6 +89,9 @@ FQDN=$fqdn
 if [[ ! "x$orversion" == "x" ]]; then
     OR_VERSION_OPTION="--or-version=$orversion"
     OR_VERSION=$(tr -d '.' <<< "$orversion")
+else
+    # we want latest version, however this is always > 65 (see `user-data.orcharhino.skel`)
+    OR_VERSION=10000
 fi
 
 eval "cat > meta-data <<EOF
