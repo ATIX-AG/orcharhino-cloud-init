@@ -88,6 +88,7 @@ fi
 FQDN=$fqdn
 if [[ ! "x$orversion" == "x" ]]; then
     OR_VERSION_OPTION="--or-version=$orversion"
+    OR_VERSION=$(tr -d '.' <<< "$orversion")
 fi
 
 eval "cat > meta-data <<EOF
