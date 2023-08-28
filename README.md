@@ -95,9 +95,9 @@ Available ports for connection:
 Provide the image on Proxmox server (a direct download on the server is probably
 faster) and `user-data`/`meta-data`:
 ```
-$ ./qemu/10-get-generic-image.sh alma
 $ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
-$ scp ./images/alma-generic-image.qcow2 proxmox:/var/lib/vz/images/
+$ ./qemu/10-get-generic-image.sh alma
+$ scp ./qemu/images/alma-generic-image.qcow2 proxmox:/var/lib/vz/images/
 $ scp ./{user,meta}-data proxmox:/var/lib/vz/snippets/
 ```
 
@@ -170,9 +170,10 @@ Create a VM in VMware (with at least minimal system requirements) and add:
 
 # AWS EC2
 
+## Deploy Manually
+
 Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
-
 ```
 $ ./build-seed -o ~/alma8.osk [-a ./answers-default.yaml]
 $ ls -1 ./user-data
