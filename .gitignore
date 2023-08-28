@@ -1,7 +1,7 @@
 user-data
 meta-data
 *.iso
-images/*
+qemu/images/*
 *.osk
 answers*.yaml
 

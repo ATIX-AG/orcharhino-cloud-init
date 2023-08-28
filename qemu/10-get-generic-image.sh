@@ -4,6 +4,7 @@
 # Published under the GNU Public Licence 3
 
 dist=$1
+workdir=$(readlink -f $(dirname "${BASH_SOURCE[0]}"))
 
 declare -A images
 images[alma]=https://repo.almalinux.org/almalinux/8.8/cloud/x86_64/images/AlmaLinux-8-GenericCloud-latest.x86_64.qcow2
@@ -17,8 +18,8 @@ if ! [[ "$dist" =~ ^(alma|rocky|oracle)$ ]]; then
 fi
 
 imgfile="$dist-generic-image.qcow2"
-mkdir -p ./images
+mkdir -p $workdir/images
 
-if ! [[ -r "./images/$imgfile" ]]; then
-    wget ${images[$dist]} -O "./images/$imgfile"
+if ! [[ -r "$workdir/images/$imgfile" ]]; then
+    wget ${images[$dist]} -O "$workdir/images/$imgfile"
 fi

@@ -4,6 +4,7 @@
 # Published under the GNU Public Licence 3
 
 dist=$1
+workdir=$(readlink -f $(dirname "${BASH_SOURCE[0]}"))
 
 if ! [[ "$dist" =~ ^(alma|rocky|oracle|rhel)$ ]]; then
     echo "Usage: $(basename $0) alma|rocky|oracle|rhel"
@@ -17,6 +18,6 @@ qemu-img create \
     -f qcow2 \
     -b "$imgfile" \
     -F qcow2 \
-    "./images/$imgsnapfile"
+    "$workdir/images/$imgsnapfile"
 
-qemu-img resize "./images/$imgsnapfile" +20G
+qemu-img resize "$workdir/images/$imgsnapfile" +20G

@@ -30,10 +30,10 @@ brand new orcharhino instance with content.
 
 ## orcharhino
 
-For automatic installation of orcharhino, invoke `./20-build-seed.sh` with
+For automatic installation of orcharhino, invoke `./build-seed` with
 answers file parameter:
 ```
-$ ./20-build-seed.sh -o ~/alma8.osk -a ./answers-default.yaml
+$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
 ```
 Find more information about variables used in `./answers-default.yaml` at
 [or_installation](
@@ -42,7 +42,7 @@ role.
 
 To launch web UI installer, do not provide answers file parameter:
 ```
-$ ./20-build-seed.sh -o ~/alma8.osk
+$ ./build-seed -o ~/alma8.osk
 ```
 
 
@@ -50,14 +50,14 @@ $ ./20-build-seed.sh -o ~/alma8.osk
 
 For automatic installation of Foreman, run:
 ```
-$ ./20-build-seed.sh -f
+$ ./build-seed -f
 ```
 > **NOTE**
 > Providing an answers file is currently not supported.
 
 For automatic installation of Foreman with Katello, run:
 ```
-$ ./20-build-seed.sh -k
+$ ./build-seed -k
 ```
 
 
@@ -65,10 +65,10 @@ $ ./20-build-seed.sh -k
 
 To start local QEMU instance with interactive orcharhino web UI installer, run:
 ```
-$ ./10-get-generic-image.sh alma
-$ ./20-build-seed.sh -o ~/alma8.osk
-$ ./30-create-snapshot.sh alma
-$ ./50-run-qemu.sh
+$ ./qemu/10-get-generic-image.sh alma
+$ ./build-seed -o ~/alma8.osk
+$ ./qemu/30-create-snapshot.sh alma
+$ ./qemu/50-run-qemu.sh
 ```
 Check the tty output for the URL to the installer.
 
@@ -77,10 +77,10 @@ the URL.
 
 To start local QEMU instance without interactive installer, run:
 ```
-$ ./10-get-generic-image.sh alma
-$ ./20-build-seed.sh -o ~/alma8.osk -a ./answers-default.yaml
-$ ./30-create-snapshot.sh alma
-$ ./50-run-qemu.sh
+$ ./qemu/10-get-generic-image.sh alma
+$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
+$ ./qemu/30-create-snapshot.sh alma
+$ ./qemu/50-run-qemu.sh
 ```
 Check the tty output for progress.
 
@@ -95,8 +95,8 @@ Available ports for connection:
 Provide the image on Proxmox server (a direct download on the server is probably
 faster) and `user-data`/`meta-data`:
 ```
-$ ./10-get-generic-image.sh alma
-$ ./20-build-seed.sh -o ~/alma8.osk -a ./answers-default.yaml
+$ ./qemu/10-get-generic-image.sh alma
+$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
 $ scp ./images/alma-generic-image.qcow2 proxmox:/var/lib/vz/images/
 $ scp ./{user,meta}-data proxmox:/var/lib/vz/snippets/
 ```
@@ -143,8 +143,8 @@ CD/DVD to the VM.
 
 Convert the image locally and copy it to the ESXi host:
 ```
-$ ./10-get-generic-image.sh alma
-$ qemu-img convert -f qcow2 -O vmdk alma8-uefi.qcow2 alma8-uefi.vmdk
+$ ./qemu/10-get-generic-image.sh alma
+$ qemu-img convert -f qcow2 -O vmdk ./qemu/images/alma-generic-image.qcow2.qcow2 alma8-uefi.vmdk
 $ scp ./alma8-uefi.vmdk root@192.168.145.4:/vmfs/volumes/57f5ee0e-329bfdc1-2056-002590e5da3a/cloud-init-images/
 ```
 
@@ -159,7 +159,7 @@ Clone: 100% done.
 
 Generate seed ISO and copy it to ESXi host:
 ```
-$ ./20-build-seed.sh -o ~/alma8.osk [-a ./answers-default.yaml]
+$ ./build-seed -o ~/alma8.osk [-a ./answers-default.yaml]
 $ scp ./seed.iso root@192.168.145.4:/vmfs/volumes/57f5ee0e-329bfdc1-2056-002590e5da3a/cloud-init-images/seed-alma8.iso
 ```
 
@@ -174,7 +174,7 @@ Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
 
 ```
-$ ./20-build-seed.sh -o ~/alma8.osk [-a ./answers-default.yaml]
+$ ./build-seed -o ~/alma8.osk [-a ./answers-default.yaml]
 $ ls -1 ./user-data
 ./user-data
 ```
