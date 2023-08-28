@@ -33,7 +33,7 @@ brand new orcharhino instance with content.
 For automatic installation of orcharhino, invoke `./20-build-seed.sh` with
 answers file parameter:
 ```
-$ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
+$ ./20-build-seed.sh -o ~/alma8.osk -a ./answers-default.yaml
 ```
 Find more information about variables used in `./answers-default.yaml` at
 [or_installation](
@@ -42,7 +42,7 @@ role.
 
 To launch web UI installer, do not provide answers file parameter:
 ```
-$ ./20-build-seed.sh ~/alma8.osk
+$ ./20-build-seed.sh -o ~/alma8.osk
 ```
 
 
@@ -50,14 +50,14 @@ $ ./20-build-seed.sh ~/alma8.osk
 
 For automatic installation of Foreman, run:
 ```
-$ FLAVOR=foreman ./20-build-seed.sh
+$ ./20-build-seed.sh -f
 ```
 > **NOTE**
 > Providing an answers file is currently not supported.
 
 For automatic installation of Foreman with Katello, run:
 ```
-$ FLAVOR=foreman-katello ./20-build-seed.sh
+$ ./20-build-seed.sh -k
 ```
 
 
@@ -66,7 +66,7 @@ $ FLAVOR=foreman-katello ./20-build-seed.sh
 To start local QEMU instance with interactive orcharhino web UI installer, run:
 ```
 $ ./10-get-generic-image.sh alma
-$ ./20-build-seed.sh ~/alma8.osk
+$ ./20-build-seed.sh -o ~/alma8.osk
 $ ./30-create-snapshot.sh alma
 $ ./50-run-qemu.sh
 ```
@@ -78,7 +78,7 @@ the URL.
 To start local QEMU instance without interactive installer, run:
 ```
 $ ./10-get-generic-image.sh alma
-$ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
+$ ./20-build-seed.sh -o ~/alma8.osk -a ./answers-default.yaml
 $ ./30-create-snapshot.sh alma
 $ ./50-run-qemu.sh
 ```
@@ -96,7 +96,7 @@ Provide the image on Proxmox server (a direct download on the server is probably
 faster) and `user-data`/`meta-data`:
 ```
 $ ./10-get-generic-image.sh alma
-$ ./20-build-seed.sh ~/alma8.osk ./answers-default.yaml
+$ ./20-build-seed.sh -o ~/alma8.osk -a ./answers-default.yaml
 $ scp ./images/alma-generic-image.qcow2 proxmox:/var/lib/vz/images/
 $ scp ./{user,meta}-data proxmox:/var/lib/vz/snippets/
 ```
@@ -159,7 +159,7 @@ Clone: 100% done.
 
 Generate seed ISO and copy it to ESXi host:
 ```
-$ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
+$ ./20-build-seed.sh -o ~/alma8.osk [-a ./answers-default.yaml]
 $ scp ./seed.iso root@192.168.145.4:/vmfs/volumes/57f5ee0e-329bfdc1-2056-002590e5da3a/cloud-init-images/seed-alma8.iso
 ```
 
@@ -174,7 +174,7 @@ Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
 
 ```
-$ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
+$ ./20-build-seed.sh -o ~/alma8.osk [-a ./answers-default.yaml]
 $ ls -1 ./user-data
 ./user-data
 ```
