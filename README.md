@@ -89,6 +89,10 @@ Available ports for connection:
 - Web UI installer: 8015 (http://localhost:8015)
 - Web UI: 8443 (https://localhost:8443)
 
+> **NOTE**
+> Re-run `./qemu/30-create-snapshot.sh alma` to reset your current snapshot.
+> Be careful not to delete data unintentionally!
+
 
 # Proxmox
 
