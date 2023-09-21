@@ -185,16 +185,17 @@ $ ls -1 ./user-data
 ```
 
 
-## Deploy AWS Infrastructure via Terraform
+# Deploy with Terraform
 
 This repository contains Terraform code for deploying an AWS Virtual Private
-Cloud (VPC), Security Group (currently all ports open), and an EC2 instance with
-user data from the previous step. AWS Terraform public modules are used
-(https://github.com/terraform-aws-modules).
+Cloud (VPC), Security Group, and an EC2 instance with user data from the
+previous step utilizing [Terraform public modules are
+used](https://github.com/terraform-aws-modules).
 
 Prerequisites:
+
 - Terraform installed on your local machine
-- AWS Credentials with appropriate permissions
+- AWS credentials with appropriate permissions
 - Generated `./user-data` file (see above)
 
 To deploy this Terraform code, change directory into the
@@ -226,14 +227,31 @@ NOTE: EC2 instance will require a ssh key called 'orcharino', be sure to create 
 
 # How to deploy Orcharhino on Proxmox
 
-Generate user-data and metadata just like in the previous steps, but make sure you are using the correct OSK for the correct operating system.
+This is a step-by-step guide on how to use Terraform to provision a Virtual Machine (VM) on a Proxmox virtualization platform.
+
+Prerequisites:
+ - Proxmox server
+ - Terraform installed
+ - Proxmox provider for Terraform
+
+We would need to have VM template already existing on the Proxmox (https://pve.proxmox.com/wiki/VM_Templates_and_Clones) and we would need to provide the name of that template to terraform `proxmox_template_clone` variable located in the `terraform.tfvars`. This is the current approach, which will likely be possible to automate it in the future.
+This terraform code will also upload a previously generated user-data with the "build-seed" script to a specific proxmox volume which will also be deleted from the volume after running terraform destroy. Currently this terraform code uses password to connect to the proxmox server and upload the file. There is also an option to use SSH key which is more secure.
+
+Deployment steps:
+ - Generate user-data and metadata just like in the previous steps, but make sure you are using the correct OSK for the correct operating system. The command is:
 
 ```
-$ ./20-build-seed.sh ~/alma8.osk [./answers-default.yaml]
+$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
 ```
-After the user-data and meta-data are generated cd into the terraform-proxmox folder. Then go into the terraform.tfvars file and add your variables for accessing the proxmox server and your vm.
+After the user-data and meta-data are generated `cd` into the `terraform-proxmox` folder. Then go into the `terraform.tfvars` file and add your variables for accessing the proxmox server and your Virtual Machine (VM).
 Now all that is left is to type the ussual terraform commands and terraform will automatically fetch the user-data and meta-data that we have generated.
 - `terraform init`
 - `terraform plan`
 - `terraform apply`
 - `terraform destroy`
+
+# Terraform state backend
+
+Currently there are two options to store terraform state files. The first one is gitlab backend and the second one is on Amazon S3 bucket. Both of those options we can find in `terraform-proxmox` folder in the `provider.tf` file.
+For the Gitlab backend we need our `GITLAB_URL` and `PROJECT_ID` which can be found in each repository right under the repository name.
+For AWS S3 Bucket backend we need to have existing bucket in the specific region that we have stated in the `provider.tf` configuration and the path that we want.
