@@ -25,6 +25,7 @@ fqdn="rhino.atix-training.de"
 rootpw="linux"
 sshpubfile=$(ls -1 $HOME/.ssh/id_*.pub | head -n1)
 orversion=
+scriptdir=$(dirname $0)
 
 while getopts "fhko:n:a:v:p:s:" o; do
     case "${o}" in
@@ -95,12 +96,12 @@ else
 fi
 
 eval "cat > meta-data <<EOF
-$(<./meta-data.$flavor.skel)
+$(<$scriptdir/meta-data.$flavor.skel)
 EOF
 " 2> /dev/null
 
 eval "cat > user-data <<EOF
-$(<./user-data.$flavor.skel)
+$(<$scriptdir/user-data.$flavor.skel)
 EOF
 " 2> /dev/null
 
