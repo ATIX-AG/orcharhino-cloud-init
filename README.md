@@ -179,9 +179,8 @@ Create a VM in VMware (with at least minimal system requirements) and add:
 Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
 ```
-$ ./build-seed -o ~/alma8.osk [-a ./answers-default.yaml]
-$ ls -1 ./user-data
-./user-data
+$ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
+
 ```
 
 
@@ -198,8 +197,12 @@ Prerequisites:
 - AWS credentials with appropriate permissions
 - Generated `./user-data` file (see above)
 
-To deploy this Terraform code, change directory into the
-`./aws-terraform-infrastructure` folder and run the following steps:
+Generate `user-data`:
+```
+$ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
+
+```
+To deploy this terraform code cd into the aws-terraform-infrastructure folder and do the following steps:
 
 ```
 $ terraform init   # to initialize the Terraform working directory and download all required modules
@@ -235,11 +238,10 @@ Prerequisites:
  - Proxmox provider for Terraform
 
 We would need to have VM template already existing on the Proxmox (https://pve.proxmox.com/wiki/VM_Templates_and_Clones) and we would need to provide the name of that template to terraform `proxmox_template_clone` variable located in the `terraform.tfvars`. This is the current approach, which will likely be possible to automate it in the future.
-This terraform code will also upload a previously generated user-data with the "build-seed" script to a specific proxmox volume which will also be deleted from the volume after running terraform destroy. Currently this terraform code uses password to connect to the proxmox server and upload the file. There is also an option to use SSH key which is more secure.
+This terraform code will also upload a previously generated `user-data` with the `build-seed` script to a specific proxmox volume which will also be deleted from the volume after running terraform destroy. Currently this terraform code uses password to connect to the proxmox server and upload the file. There is also an option to use SSH key which is more secure.
 
 Deployment steps:
- - Generate user-data and metadata just like in the previous steps, but make sure you are using the correct OSK for the correct operating system. The command is:
-
+ - Generate `user-data` and `meta-data` just like in the previous steps, but make sure you are using the correct OSK for the correct operating system. The command is:
 ```
 $ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
 ```
