@@ -96,8 +96,10 @@ Available ports for connection:
 
 # Proxmox
 
+## Deploy Manually
+
 Provide the image on Proxmox server (a direct download on the server is probably
-faster) and `user-data`/`meta-data`:
+faster) and `user-data`/`meta-data` files:
 ```
 $ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
 $ ./qemu/10-get-generic-image.sh alma
@@ -134,13 +136,62 @@ Alternatively, copy `seed.iso` to the Proxmox server and add this ISO as virtual
 CD/DVD to the VM.
 
 > **IMPORTANT**
-> Sometimes user-/meta-data wasn't provided correctly (root login not working,
-> no hostname set)! After re-running `qm set 125 --cicustom ...` commands it
-> worked.
+> Sometimes user data & meta data wasn't provided correctly (root login not
+> working, no hostname set)! After re-running `qm set 125 --cicustom ...`
+> commands it worked.
 
 > **IMPORTANT**
 > Do not trust `qm cloudinit dump 125 user` output. This does not print the
 > expected output.
+
+
+## Deploy with Terraform
+
+This repository contains Terraform code for deploying an orcharhino Server in
+Proxmox VE utilizing [Terraform Provider
+Proxmox](https://github.com/Telmate/terraform-provider-proxmox).
+
+Prerequisites:
+
+- Recent version of Terraform CLI installed on your local machine
+- Proxmox server
+- A [VM template](https://pve.proxmox.com/wiki/VM_Templates_and_Clones) (see [Preparing Cloud-Init Templates](https://pve.proxmox.com/wiki/Cloud-Init_Support#_preparing_cloud_init_templates))
+- OSK file matching the VM template OS
+
+Generate `user-data`/`meta-data` file:
+```
+$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
+$ ls -1 ./*-data
+./meta-data
+./user-data
+```
+
+Start deployment with default settings using Terraform:
+```
+$ cd ./terraform-proxmox
+$ cp ./terraform.tfvars.skel terraform.tfvars
+$ terraform init
+$ terraform plan
+$ terraform apply
+```
+
+Destroy deployed infrastructure and clean up resources using Terraform:
+```
+terraform destroy
+```
+
+All
+[settings](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs)
+are stored in the `terraform.tfvars` file:
+
+`pm_api_url`: Target Proxmox API endpoint
+`pm_user`: The Proxmox user and realm (@pam or @pve)
+`pm_password`: The Proxmox user password
+`server_ip`: Proxmox server FQDN to copy user data & meta data to Proxmox server
+`ssh_username`: SSH user to copy user data & meta data to Proxmox server
+`ssh_password`: SSH password to copy user data & meta data to Proxmox server
+`vm_name`: Name of VM
+`proxmox_template_clone`: Name of VM template
 
 
 # VMware
@@ -180,80 +231,60 @@ Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
 ```
 $ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
-
+$ ls -1 ./user-data
+./user-data
 ```
 
 
-# Deploy with Terraform
+## Deploy with Terraform
 
-This repository contains Terraform code for deploying an AWS Virtual Private
-Cloud (VPC), Security Group, and an EC2 instance with user data from the
-previous step utilizing [Terraform public modules are
-used](https://github.com/terraform-aws-modules).
+This repository contains Terraform code for deploying an orcharhino Server in
+AWS. It will create a Virtual Private Cloud (VPC), Security Group, and an EC2
+instance with user data from the previous step utilizing [Terraform public
+modules are used](https://github.com/terraform-aws-modules).
 
 Prerequisites:
 
-- Terraform installed on your local machine
+- Recent version of Terraform CLI installed on your local machine
 - AWS credentials with appropriate permissions
-- Generated `./user-data` file (see above)
+  - AmazonEC2FullAccess
+  - NetworkAdministrator
+- OSK file matching the desired AMI OS
 
-Generate `user-data`:
+Generate `user-data` file:
 ```
-$ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
-
-```
-To deploy this terraform code cd into the aws-terraform-infrastructure folder and do the following steps:
-
-```
-$ terraform init   # to initialize the Terraform working directory and download all required modules
-$ terraform plan   # to print out the plan of what will be deployed
-$ terraform apply  # confirm the deployment by typing yes when prompted; Terraform will create the VPC, security group, and EC2 instance based on the provided configuration
+$ ./build-seed -o ~/rocky8.osk -a ./answers-default-aws.yaml
+$ ls -1 ./user-data
+./user-data
 ```
 
-To remove the deployed infrastructure and clean up resources, use the following
-command:
+Start deployment with default settings using Terraform:
+```
+$ cd ./terraform-aws
+$ cp ./terraform.tfvars.skel terraform.tfvars
+$ terraform init
+$ terraform plan
+$ terraform apply
+```
 
+Destroy deployed infrastructure and clean up resources using Terraform:
 ```
 terraform destroy
 ```
 
-To remove the deployed infrastructure and clean up resources, use the following command:
+All [settings](https://developer.hashicorp.com/terraform/tutorials/modules/module-use) are stored in the `terraform.tfvars` file:
 
-- `terraform destroy`
+`vpc_name`: Name of VPC
+`vpc_cidr`: CIDR block for VPC
+`vpc_azs`: Availability zones for VPC
+`vpc_public_subnets`: Public subnets for VPC
+`vpc_enable_nat_gateway`: Enable NAT gateway for VPC
+`vpc_enable_vpn_gateway`: Enable VPN gateway for VPC
+`ec2_name`: Name of EC2 instance
+`ec2_image`: [Amazon Machine Image (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
+`ec2_instance_type`: [Instance type](https://aws.amazon.com/ec2/instance-types/t3/)
+`ec2_key_name`: SSH key name to be used
+`ec2_monitoring`: [Monitoring](https://docs.aws.amazon.com/de_de/AWSEC2/latest/UserGuide/monitoring_ec2.html)
 
-All the sample variables are stored in the terraform.tfvars.skel file. Currently it will deploy EC2 instance called orcharino-on-aws running on Rocky8 Linux with the hardware specifications of 16gb RAM and 4 vcpu (t3a.xlarge).
-To deploy the sample configuration copy the contents from the terraform.tfvars.skel file and create terraform.tfvars and paste it there, or you can alter the variables with your values.
-
-The user and meta data generated for specific operating system should be used only on that OS. The list of AMI's (Amazon machine images) can be found on AWS Marketplace. For example: Rocky Linux 8 - https://aws.amazon.com/marketplace/pp/prodview-2otariyxb3mqu
-
-NOTE: EC2 instance will require a ssh key called 'orcharino', be sure to create the key with the same name in your AWS account before deploying the instance.
-
-# How to deploy Orcharhino on Proxmox
-
-This is a step-by-step guide on how to use Terraform to provision a Virtual Machine (VM) on a Proxmox virtualization platform.
-
-Prerequisites:
- - Proxmox server
- - Terraform installed
- - Proxmox provider for Terraform
-
-We would need to have VM template already existing on the Proxmox (https://pve.proxmox.com/wiki/VM_Templates_and_Clones) and we would need to provide the name of that template to terraform `proxmox_template_clone` variable located in the `terraform.tfvars`. This is the current approach, which will likely be possible to automate it in the future.
-This terraform code will also upload a previously generated `user-data` with the `build-seed` script to a specific proxmox volume which will also be deleted from the volume after running terraform destroy. Currently this terraform code uses password to connect to the proxmox server and upload the file. There is also an option to use SSH key which is more secure.
-
-Deployment steps:
- - Generate `user-data` and `meta-data` just like in the previous steps, but make sure you are using the correct OSK for the correct operating system. The command is:
-```
-$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
-```
-After the user-data and meta-data are generated `cd` into the `terraform-proxmox` folder. Then go into the `terraform.tfvars` file and add your variables for accessing the proxmox server and your Virtual Machine (VM).
-Now all that is left is to type the ussual terraform commands and terraform will automatically fetch the user-data and meta-data that we have generated.
-- `terraform init`
-- `terraform plan`
-- `terraform apply`
-- `terraform destroy`
-
-# Terraform state backend
-
-Currently there are two options to store terraform state files. The first one is gitlab backend and the second one is on Amazon S3 bucket. Both of those options we can find in `terraform-proxmox` folder in the `provider.tf` file.
-For the Gitlab backend we need our `GITLAB_URL` and `PROJECT_ID` which can be found in each repository right under the repository name.
-For AWS S3 Bucket backend we need to have existing bucket in the specific region that we have stated in the `provider.tf` configuration and the path that we want.
+> **NOTE** Be sure to create the specified SSH key with the same name in your
+> AWS account before deploying the instance.
