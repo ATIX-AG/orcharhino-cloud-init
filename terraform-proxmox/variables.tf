@@ -18,6 +18,9 @@ variable "ssh_key" {
   default = "~/.ssh/id_ed25519"
 }
 
+
+# VM variables
+
 variable "memory" {
   default = 2048
 }
@@ -37,6 +40,7 @@ variable "disk_size" {
 variable "vm_name" {
   default = "my-test-vm"
 }
+
 variable "vm_description" {
   default = "A test for using terraform and cloudinit"
 }
@@ -85,7 +89,8 @@ variable "vm_scsihw" {
   default = "lsi"
 }
 
-# Disk vars
+
+# Disk variables
 
 variable "vm_disk_size" {
   default = "10G"
@@ -107,7 +112,8 @@ variable "vm_disk_discard" {
   default = "on"
 }
 
-# Network vars
+
+# Network variables
 
 variable "vm_network_model" {
   default = "virtio"
@@ -122,9 +128,8 @@ variable "vm_network_tag" {
 }
 
 
-# Cicustom vars
+# Cicustom variables
 
 variable "vm_cloudinit_cdrom_storage" {
   default = "local"
 }
-

@@ -1,0 +1,18 @@
+# Proxmox
+
+pm_api_url  = "https://my.proxmox.org/api2/json"
+pm_user     = "user@pve"
+pm_password = "password"
+
+
+# SSH
+
+server_ip    = "my.proxmox.org"
+ssh_username = "user"
+ssh_password = "password"
+
+
+# VM
+
+vm_name                = "orcharhino-on-proxmox"
+proxmox_template_clone = "template-clone"

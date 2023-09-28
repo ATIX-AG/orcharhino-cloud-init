@@ -12,8 +12,8 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
   name = var.vm_name
   desc = var.vm_description
 
-  # Node name has to be the same name as within the cluster
-  # this might not include the FQDN
+  # Node name has to be the same name as within the cluster this might not
+  # include the FQDN
   target_node = var.target_proxmox_node
 
   # The destination resource pool for the new VM
@@ -54,10 +54,14 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
   cicustom                = "user=local:snippets/user-data-${random_string.random.id},meta=local:snippets/meta-data-${random_string.random.id}"
 }
 
-# Upload userdata to proxmox server
+
+# Upload userdata to Proxmox server
+
 provider "null" {}
 
+
 # Define the server details
+
 resource "null_resource" "file_upload_with_sshpassword" {
   # The connection details for the server
   connection {
@@ -76,8 +80,8 @@ resource "null_resource" "file_upload_with_sshpassword" {
     EOT
   }
 }
-resource "null_resource" "file_delete_with_sshpass" {
 
+resource "null_resource" "file_delete_with_sshpass" {
   triggers = {
     user     = var.ssh_username
     password = var.ssh_password
@@ -101,46 +105,46 @@ resource "null_resource" "file_delete_with_sshpass" {
 }
 
 
-# Upload data to proxmox server using SSH key
+# Upload data to Proxmox server using SSH public key authentication method
 
-# resource "null_resource" "file_upload_with_sshkey" {
-#   # The connection details for the server
-#   connection {
-#     type        = "ssh"
-#     user        = var.ssh_username
-#     host        = var.server_ip
-#     private_key = var.ssh_key
-#   }
+#resource "null_resource" "file_upload_with_sshkey" {
+#  # The connection details for the server
+#  connection {
+#    type        = "ssh"
+#    user        = var.ssh_username
+#    host        = var.server_ip
+#    private_key = var.ssh_key
+#  }
+#
+#  # Use the local-exec provisioner to upload the file
+#  provisioner "local-exec" {
+#    command = <<-EOT
+#      # Upload the file using SCP
+#      ssh -i "${var.ssh_key}" scp "${var.userdata_file_path}" ${var.ssh_username}@${var.server_ip}:/var/lib/vz/snippets/user-data-${random_string.random.id}
+#      ssh -i "${var.ssh_key}" scp "${var.metadata_file_path}" ${var.ssh_username}@${var.server_ip}:/var/lib/vz/snippets/meta-data-${random_string.random.id}
+#    EOT
+#  }
+#}
 
-#   # Use the local-exec provisioner to upload the file
-#   provisioner "local-exec" {
-#     command = <<-EOT
-#       # Upload the file using SCP
-#       ssh -i "${var.ssh_key}" scp "${var.userdata_file_path}" ${var.ssh_username}@${var.server_ip}:/var/lib/vz/snippets/user-data-${random_string.random.id}
-#       ssh -i "${var.ssh_key}" scp "${var.metadata_file_path}" ${var.ssh_username}@${var.server_ip}:/var/lib/vz/snippets/meta-data-${random_string.random.id}
-#     EOT
-#   }
-# }
-# resource "null_resource" "file_delete_with_sshkey" {
-
-#   triggers = {
-#     user        = var.ssh_username
-#     server      = var.server_ip
-#     hash        = random_string.random.id
-#     private_key = var.ssh_key
-#   }
-
-#   provisioner "local-exec" {
-#     when    = destroy
-#     command = <<-EOT
-#       ssh -i ${self.triggers.private_key} ${self.triggers.user}@${self.triggers.server} rm /var/lib/vz/snippets/user-data-${self.triggers.hash}
-#       ssh -i ${self.triggers.private_key} ${self.triggers.user}@${self.triggers.server} rm /var/lib/vz/snippets/meta-data-${self.triggers.hash}
-#     EOT
-#     environment = {
-#       user        = self.triggers.user
-#       private_key = self.triggers.private_key
-#       server      = self.triggers.server
-#       hash        = self.triggers.hash
-#     }
-#   }
-# }
+#resource "null_resource" "file_delete_with_sshkey" {
+#  triggers = {
+#    user        = var.ssh_username
+#    server      = var.server_ip
+#    hash        = random_string.random.id
+#    private_key = var.ssh_key
+#  }
+#
+#  provisioner "local-exec" {
+#    when    = destroy
+#    command = <<-EOT
+#      ssh -i ${self.triggers.private_key} ${self.triggers.user}@${self.triggers.server} rm /var/lib/vz/snippets/user-data-${self.triggers.hash}
+#      ssh -i ${self.triggers.private_key} ${self.triggers.user}@${self.triggers.server} rm /var/lib/vz/snippets/meta-data-${self.triggers.hash}
+#    EOT
+#    environment = {
+#      user        = self.triggers.user
+#      private_key = self.triggers.private_key
+#      server      = self.triggers.server
+#      hash        = self.triggers.hash
+#    }
+#  }
+#}
