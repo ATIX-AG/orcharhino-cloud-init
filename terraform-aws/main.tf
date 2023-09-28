@@ -2,7 +2,8 @@ locals {
   user_data = file(var.file_path)
 }
 
-#VPC
+
+# VPC
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
@@ -13,8 +14,8 @@ module "vpc" {
   azs            = var.vpc_azs
   public_subnets = var.vpc_public_subnets
 
-  enable_nat_gateway = var.enable_nat_gateway
-  enable_vpn_gateway = var.enable_vpn_gateway
+  enable_nat_gateway = var.vpc_enable_nat_gateway
+  enable_vpn_gateway = var.vpc_enable_vpn_gateway
 
   tags = {
     Terraform   = "true"
@@ -22,7 +23,8 @@ module "vpc" {
   }
 }
 
-#Security group for the instance
+
+# Security group
 
 resource "aws_security_group" "orcharino" {
   name_prefix = "orcharino-sg"
@@ -44,6 +46,8 @@ resource "aws_security_group" "orcharino" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+
 # EC2 instance
 
 module "ec2_instance" {
@@ -75,31 +79,32 @@ module "ec2_instance" {
   }
 }
 
-# resource "aws_route53_zone" "primary" {
-#   name = "example.com" # Replace with your domain name
-  
-# }
 
-# resource "aws_route53_record" "orcharhino" {
-#   zone_id = aws_route53_zone.primary.zone_id
-#   name    = "www.example.com"
-#   type    = "A"
-#   ttl     = 300
-#   records = ["IP-ADDRESS"]
-# }
+# Route53 configuration
 
-# additional /var storage
+#resource "aws_route53_zone" "primary" {
+#   name = "example.com"  # Replace with your domain name
+#}
+
+#resource "aws_route53_record" "orcharhino" {
+#  zone_id = aws_route53_zone.primary.zone_id
+#  name    = "www.example.com"
+#  type    = "A"
+#  ttl     = 300
+#  records = ["IP-ADDRESS"]
+#}
 
 
-# resource "aws_volume_attachment" "this" {
-#   device_name = "/var"
-#   volume_id   = aws_ebs_volume.this.id
-#   instance_id = module.ec2.id
-# }
+# Additional /var storage
 
-# resource "aws_ebs_volume" "this" {
-#   availability_zone = element(local.azs, 0)
-#   size              = 1
+#resource "aws_volume_attachment" "this" {
+#  device_name = "/var"
+#  volume_id   = aws_ebs_volume.this.id
+#  instance_id = module.ec2.id
+#}
 
-#   tags = local.tags
-# }
+#resource "aws_ebs_volume" "this" {
+#  availability_zone = element(local.azs, 0)
+#  size              = 1
+#  tags = local.tags
+#}
