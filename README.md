@@ -184,14 +184,14 @@ All
 [settings](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs)
 are stored in the `terraform.tfvars` file:
 
-`pm_api_url`: Target Proxmox API endpoint
-`pm_user`: The Proxmox user and realm (@pam or @pve)
-`pm_password`: The Proxmox user password
-`server_ip`: Proxmox server FQDN to copy user data & meta data to Proxmox server
-`ssh_username`: SSH user to copy user data & meta data to Proxmox server
-`ssh_password`: SSH password to copy user data & meta data to Proxmox server
-`vm_name`: Name of VM
-`proxmox_template_clone`: Name of VM template
+* `pm_api_url`: Target Proxmox API endpoint
+* `pm_user`: The Proxmox user and realm (@pam or @pve)
+* `pm_password`: The Proxmox user password
+* `server_ip`: Proxmox server FQDN to copy user data & meta data to Proxmox server
+* `ssh_username`: SSH user to copy user data & meta data to Proxmox server
+* `ssh_password`: SSH password to copy user data & meta data to Proxmox server
+* `vm_name`: Name of VM
+* `proxmox_template_clone`: Name of VM template
 
 
 # VMware
@@ -274,17 +274,17 @@ terraform destroy
 
 All [settings](https://developer.hashicorp.com/terraform/tutorials/modules/module-use) are stored in the `terraform.tfvars` file:
 
-`vpc_name`: Name of VPC
-`vpc_cidr`: CIDR block for VPC
-`vpc_azs`: Availability zones for VPC
-`vpc_public_subnets`: Public subnets for VPC
-`vpc_enable_nat_gateway`: Enable NAT gateway for VPC
-`vpc_enable_vpn_gateway`: Enable VPN gateway for VPC
-`ec2_name`: Name of EC2 instance
-`ec2_image`: [Amazon Machine Image (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
-`ec2_instance_type`: [Instance type](https://aws.amazon.com/ec2/instance-types/t3/)
-`ec2_key_name`: SSH key name to be used
-`ec2_monitoring`: [Monitoring](https://docs.aws.amazon.com/de_de/AWSEC2/latest/UserGuide/monitoring_ec2.html)
+* `vpc_name`: Name of VPC
+* `vpc_cidr`: CIDR block for VPC
+* `vpc_azs`: Availability zones for VPC
+* `vpc_public_subnets`: Public subnets for VPC
+* `vpc_enable_nat_gateway`: Enable NAT gateway for VPC
+* `vpc_enable_vpn_gateway`: Enable VPN gateway for VPC
+* `ec2_name`: Name of EC2 instance
+* `ec2_image`: [Amazon Machine Image (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
+* `ec2_instance_type`: [Instance type](https://aws.amazon.com/ec2/instance-types/t3/)
+* `ec2_key_name`: SSH key name to be used
+* `ec2_monitoring`: [Monitoring](https://docs.aws.amazon.com/de_de/AWSEC2/latest/UserGuide/monitoring_ec2.html)
 
 > **NOTE** Be sure to create the specified SSH key with the same name in your
 > AWS account before deploying the instance.
