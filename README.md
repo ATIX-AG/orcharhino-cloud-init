@@ -170,10 +170,12 @@ Start deployment with default settings using Terraform:
 ```
 $ cd ./terraform-proxmox
 $ cp ./terraform.tfvars.skel terraform.tfvars
+$ export AWS_ACCESS_KEY_ID=...
 $ terraform init
 $ terraform plan
 $ terraform apply
 ```
+Customize variables in `terraform.tfvars` according to your needs.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
@@ -262,10 +264,12 @@ Start deployment with default settings using Terraform:
 ```
 $ cd ./terraform-aws
 $ cp ./terraform.tfvars.skel terraform.tfvars
+$ export AWS_ACCESS_KEY_ID=...
 $ terraform init
 $ terraform plan
 $ terraform apply
 ```
+Customize variables in `terraform.tfvars` according to your needs.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
@@ -288,3 +292,44 @@ All [settings](https://developer.hashicorp.com/terraform/tutorials/modules/modul
 
 > **NOTE** Be sure to create the specified SSH key with the same name in your
 > AWS account before deploying the instance.
+
+
+# Terraform State Backend
+
+Terraform uses state files to store details about your infrastructure configuration.
+With Terraform remote backends, you can store the state file in a remote and shared store.
+```
+$ cd ./terraform-<service>
+$ cp ./backend.tf.skel backend.tf
+```
+Configure the backend according to your needs.
+
+
+## GitLab
+
+Adjust `backend.tf` file as follows:
+```
+terraform {
+  backend "http" {
+  }
+}
+```
+
+Then do:
+
+1. Ensure the Terraform state has been [initialized for CI/CD](https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html#initialize-a-terraform-state-as-a-backend-by-using-gitlab-cicd).
+2. Copy a pre-populated Terraform init command:
+  1. On the left sidebar, select **Search or go** to and find your project.
+  2. Select **Operate > Terraform states**.
+  3. Next to the environment you want to use, select **Actions** and select **Copy Terraform init command.**
+3. Open a terminal and run this command on your local machine.
+
+Alternatively, set respective parameters in `backend.tf`:
+```
+terraform {
+  backend "http" {
+    address        = "https://my.gitlab.org/api/v4/projects/1234/terraform/state/aws"
+    ...
+  }
+}
+```

@@ -1,0 +1,22 @@
+#terraform {
+#  # Gitlab backend
+#  # https://developer.hashicorp.com/terraform/language/settings/backends/http
+#  # https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html
+#  backend "http" {
+##    address        = "https://{GITLAB_URL}/api/v4/projects/{PROJECT_ID}/terraform/state/main"
+##    lock_address   = "https://{GITLAB_URL}/api/v4/projects/{PROJECT_ID}/terraform/state/main/lock"
+##    unlock_address = "https://{{GITLAB_URL}}/api/v4/projects/{PROJECT_ID}/terraform/state/main/lock"
+##    lock_method    = "POST"
+##    unlock_method  = "DELETE"
+##    username       = "username"
+##    password       = "password/token"
+#  }
+#
+#  # AWS S3 backend
+#  # https://developer.hashicorp.com/terraform/language/settings/backends/s3
+#  backend "s3" {
+#    bucket = "mybucket"
+#    key    = "path/to/my/key"
+#    region = "us-east-1"
+#  }
+#}
