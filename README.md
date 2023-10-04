@@ -170,7 +170,6 @@ Start deployment with default settings using Terraform:
 ```
 $ cd ./terraform-proxmox
 $ cp ./terraform.tfvars.skel terraform.tfvars
-$ export AWS_ACCESS_KEY_ID=...
 $ terraform init
 $ terraform plan
 $ terraform apply
@@ -179,7 +178,7 @@ Customize variables in `terraform.tfvars` according to your needs.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
-terraform destroy
+$ terraform destroy
 ```
 
 All
@@ -243,7 +242,7 @@ $ ls -1 ./user-data
 This repository contains Terraform code for deploying an orcharhino Server in
 AWS. It will create a Virtual Private Cloud (VPC), Security Group, and an EC2
 instance with user data from the previous step utilizing [Terraform public
-modules are used](https://github.com/terraform-aws-modules).
+modules](https://github.com/terraform-aws-modules).
 
 Prerequisites:
 
@@ -273,7 +272,7 @@ Customize variables in `terraform.tfvars` according to your needs.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
-terraform destroy
+$ terraform destroy
 ```
 
 All [settings](https://developer.hashicorp.com/terraform/tutorials/modules/module-use) are stored in the `terraform.tfvars` file:
