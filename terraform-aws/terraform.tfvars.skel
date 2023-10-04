@@ -11,7 +11,7 @@ vpc_enable_vpn_gateway = false
 # EC2 instance
 
 ec2_name          = "orcharhino-on-ec2"
-ec2_image         = "ami-0cfdf91ea903a6111"  # Rocky Linux 8
+ec2_image         = "ami-0e76ee88d0e84ab4e"  # AlmaLinux 8
 ec2_instance_type = "t3a.xlarge"             # 4 vCPU, 16 GiB memory
 ec2_key_name      = "orcharino"
 ec2_monitoring    = false

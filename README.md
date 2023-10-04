@@ -254,7 +254,7 @@ Prerequisites:
 
 Generate `user-data` file:
 ```
-$ ./build-seed -o ~/rocky8.osk -a ./answers-default-aws.yaml
+$ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
 $ ls -1 ./user-data
 ./user-data
 ```
