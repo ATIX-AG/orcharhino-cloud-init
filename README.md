@@ -241,7 +241,7 @@ $ ls -1 ./user-data
 
 This repository contains Terraform code for deploying an orcharhino Server in
 AWS. It will create a Virtual Private Cloud (VPC), Security Group, and an EC2
-instance with user data from the previous step utilizing [Terraform public
+instance with user data from the previous step utilizing [Terraform AWS
 modules](https://github.com/terraform-aws-modules).
 
 Prerequisites:
