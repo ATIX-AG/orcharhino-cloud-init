@@ -161,26 +161,28 @@ Prerequisites:
 Generate `user-data`/`meta-data` file:
 ```
 $ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
-$ ls -1 ./*-data
-./meta-data
-./user-data
 ```
 
-Start deployment with default settings using Terraform:
+Customize variables in `terraform.tfvars` according to your needs:
 ```
 $ cd ./terraform-proxmox
 $ cp ./terraform.tfvars.skel terraform.tfvars
+```
+
+Start deployment using Terraform:
+```
 $ terraform init
 $ terraform plan
 $ terraform apply
 ```
-Customize variables in `terraform.tfvars` according to your needs.
 
 You can log in to your instance using `tux` default user and check the installation progress:
 ```
 $ ssh tux@<instance>
 [tux@instance ~]$ journalctl -f
 ```
+> **NOTE**
+> The deployed public SSH key is `ls -1 ~/.ssh/id_*.pub | head -n1`.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
@@ -238,8 +240,6 @@ Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
 ```
 $ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
-$ ls -1 ./user-data
-./user-data
 ```
 
 
@@ -261,26 +261,33 @@ Prerequisites:
 Generate `user-data` file:
 ```
 $ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
-$ ls -1 ./user-data
-./user-data
 ```
 
-Start deployment with default settings using Terraform:
+Customize variables in `terraform.tfvars` according to your needs:
 ```
 $ cd ./terraform-aws
 $ cp ./terraform.tfvars.skel terraform.tfvars
+```
+
+Set AWS environment variables:
+```
 $ export AWS_ACCESS_KEY_ID=...
+```
+
+Start deployment using Terraform:
+```
 $ terraform init
 $ terraform plan
 $ terraform apply
 ```
-Customize variables in `terraform.tfvars` according to your needs.
 
 You can log in to your instance using `tux` default user and check the installation progress:
 ```
 $ ssh tux@<instance>
 [tux@instance ~]$ journalctl -f
 ```
+> **NOTE**
+> The deployed public SSH key is `ls -1 ~/.ssh/id_*.pub | head -n1`.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
@@ -298,11 +305,8 @@ All [settings](https://developer.hashicorp.com/terraform/tutorials/modules/modul
 * `ec2_name`: Name of EC2 instance
 * `ec2_image`: [Amazon Machine Image (AMI)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
 * `ec2_instance_type`: [Instance type](https://aws.amazon.com/ec2/instance-types/t3/)
-* `ec2_key_name`: SSH key name to be used
+* `ec2_key_name`: Additional AWS SSH key name to be used
 * `ec2_monitoring`: [Monitoring](https://docs.aws.amazon.com/de_de/AWSEC2/latest/UserGuide/monitoring_ec2.html)
-
-> **NOTE** Be sure to create the specified SSH key with the same name in your
-> AWS account before deploying the instance.
 
 
 # Terraform State Backend
