@@ -6,6 +6,14 @@
 imgfile="snap.qcow2"
 workdir=$(readlink -f $(dirname "${BASH_SOURCE[0]}"))
 
+mkdir -p $workdir/local
+cat > $workdir/local/ssh_config <<EOF
+Host orcharhino
+    Hostname localhost
+    User tux
+    Port 10022
+EOF
+
 qemu-system-x86_64 \
     -enable-kvm \
     -machine q35 \

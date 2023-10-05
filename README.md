@@ -82,7 +82,12 @@ $ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
 $ ./qemu/30-create-snapshot.sh alma
 $ ./qemu/50-run-qemu.sh
 ```
-Check the tty output for progress.
+
+Connect to instance and check the TTY output of the installation progress:
+```
+$ ssh -F qemu/local/ssh_config orcharhino
+[tux@rhino ~]$ journalctl -f
+```
 
 Available ports for connection:
 - SSH: 10022 (`$ ssh -p 10022 root@localhost`)
