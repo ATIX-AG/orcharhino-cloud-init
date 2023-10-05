@@ -176,6 +176,12 @@ $ terraform apply
 ```
 Customize variables in `terraform.tfvars` according to your needs.
 
+You can log in to your instance using `tux` default user and check the installation progress:
+```
+$ ssh tux@<instance>
+[tux@instance ~]$ journalctl -f
+```
+
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
 $ terraform destroy
@@ -269,6 +275,12 @@ $ terraform plan
 $ terraform apply
 ```
 Customize variables in `terraform.tfvars` according to your needs.
+
+You can log in to your instance using `tux` default user and check the installation progress:
+```
+$ ssh tux@<instance>
+[tux@instance ~]$ journalctl -f
+```
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```

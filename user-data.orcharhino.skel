@@ -1,10 +1,13 @@
 #cloud-config
 users:
-  - name: root
+  - default
+system_info:
+  default_user:
+    name: tux
+    lock_passwd: true
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/bash
-    lock_passwd: false
-    ssh_pwauth: yes
-    hashed_passwd: $HASHED_PASSWD $SSH_AUTHORIZED_KEYS
+    hashed_passwd: ${HASHED_PASSWD}${SSH_AUTHORIZED_KEYS}
 write_files: $ANSWERS_FILE
 - encoding: b64
   content: ${OSK_B64}
