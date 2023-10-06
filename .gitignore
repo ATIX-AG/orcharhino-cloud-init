@@ -3,6 +3,7 @@ meta-data
 *.iso
 qemu/images/*
 *.osk
+local
 # Terraform
 **/.terraform/*
 *.tfstate

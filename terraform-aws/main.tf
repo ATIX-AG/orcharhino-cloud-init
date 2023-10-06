@@ -2,6 +2,10 @@ locals {
   user_data = file(var.file_path)
 }
 
+resource "random_string" "random" {
+  length  = 6
+  special = false
+}
 
 # VPC
 
@@ -77,7 +81,7 @@ module "ec2_instance" {
   name                   = var.ec2_name
   ami                    = var.ec2_image
   instance_type          = var.ec2_instance_type
-  key_name               = var.ec2_key_name
+  key_name               = module.key_pair.key_pair_name
   monitoring             = var.ec2_monitoring
   vpc_security_group_ids = [aws_security_group.orcharino.id]
   subnet_id              = module.vpc.public_subnets[0]
@@ -100,6 +104,32 @@ module "ec2_instance" {
   }
 }
 
+# Create EC2 keypair
+
+module "key_pair" {
+  source = "terraform-aws-modules/key-pair/aws"
+
+  key_name           = "orcharhino-key-${random_string.random.id}"
+  create_private_key = true
+}
+
+resource "local_sensitive_file" "private_key" {
+    content  = module.key_pair.private_key_pem
+    filename = "./local/orcharhino-ssh-key-${random_string.random.id}.pem"
+    file_permission = "0600"
+}
+
+# Create ssh-config
+
+resource local_file "ssh-config" {
+  filename = "./local/ssh-config"
+  content = <<EOT
+Host orcharhino
+    Hostname ${module.ec2_instance.public_ip}
+    User tux
+    IdentityFile ${local_sensitive_file.private_key.filename}
+EOT
+}
 
 # Route53 configuration
 
