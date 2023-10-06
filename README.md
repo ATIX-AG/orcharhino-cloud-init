@@ -286,9 +286,9 @@ $ terraform plan
 $ terraform apply
 ```
 
-You can log in to your instance using `tux` default user and check the installation progress:
+You can log in to your instance using `tux` default user and check the installation progress. This terraform code has also generated the ssh-config for us located in the `local` folder inside the `terraform-aws`, and for easier ssh access we can just run the following command:
 ```
-$ ssh tux@<instance>
+$ ssh -F ./local/ssh-config orcharhino
 [tux@instance ~]$ journalctl -f
 ```
 > **NOTE**

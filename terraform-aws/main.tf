@@ -123,6 +123,7 @@ resource "local_sensitive_file" "private_key" {
 
 resource local_file "ssh-config" {
   filename = "./local/ssh-config"
+  file_permission = "0644"
   content = <<EOT
 Host orcharhino
     Hostname ${module.ec2_instance.public_ip}
