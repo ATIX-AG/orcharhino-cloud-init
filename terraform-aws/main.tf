@@ -104,6 +104,7 @@ module "ec2_instance" {
   }
 }
 
+
 # Create EC2 keypair
 
 module "key_pair" {
@@ -119,6 +120,7 @@ resource "local_sensitive_file" "private_key" {
     file_permission = "0600"
 }
 
+
 # Create ssh-config
 
 resource local_file "ssh-config" {
@@ -131,6 +133,7 @@ Host orcharhino
     IdentityFile ${local_sensitive_file.private_key.filename}
 EOT
 }
+
 
 # Route53 configuration
 
