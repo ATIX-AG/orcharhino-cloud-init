@@ -10,9 +10,8 @@ This repository provides convenient ways to install orcharhino or Foreman
 [Cloud-Init](https://cloudinit.readthedocs.io/en/latest/).
 
 For orcharhino, an orcharhino subscription key (OSK) file is mandatory that
-matches the desired host OS ([Subscription Keys for
-testing](https://atix.atlassian.net/wiki/spaces/AXCONS/pages/265027585/Subscription+Keys+for+testing)).
-This is not needed for Foreman (+Katello) installation.
+matches the desired host OS. This is not needed for Foreman (+Katello)
+installation.
 
 For orcharhino, an "answers" file is optional that configures the installer.
 This allows an automatic installation without manual interaction in the web UI
@@ -22,8 +21,9 @@ This is not needed for Foreman (+Katello) installation.
 The output of the installation process can be viewed on /dev/tty2 and the
 system's journal (`journalctl`).
 
-Use [or-content-setup](https://git.atix.de/janloe/or-content-setup) to fill your
-brand new orcharhino instance with content.
+You can use [Foreman Ansible
+Modules](https://docs.ansible.com/ansible/latest/collections/theforeman/foreman/index.html)
+to fill your brand new orcharhino instance with content.
 
 
 # Preparations
@@ -35,10 +35,7 @@ answers file parameter:
 ```
 $ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
 ```
-Find more information about variables used in `./answers-default.yaml` at
-[or_installation](
-https://git.atix.de/ansible/roles/or_installation/-/blob/main/README.md#answersyaml-file-variables)
-role.
+You can configure your installation in the `./answers-default.yaml` file.
 
 To launch web UI installer, do not provide answers file parameter:
 ```
@@ -71,9 +68,7 @@ $ ./qemu/30-create-snapshot.sh alma
 $ ./qemu/50-run-qemu.sh
 ```
 Check the tty output for the URL to the installer.
-
-Alternatively, log in as `root` on the serial console and check `journalctl` for
-the URL.
+Alternatively, log in via SSH and check for the URL to the installer in the journal (see below).
 
 To start local QEMU instance without interactive installer, run:
 ```
@@ -83,7 +78,7 @@ $ ./qemu/30-create-snapshot.sh alma
 $ ./qemu/50-run-qemu.sh
 ```
 
-Connect to instance and check the TTY output of the installation progress:
+Connect to instance and check the installation progress in the journal:
 ```
 $ ssh -F qemu/local/ssh_config orcharhino
 [tux@rhino ~]$ journalctl -f
