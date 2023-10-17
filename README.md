@@ -154,7 +154,8 @@ Proxmox](https://github.com/Telmate/terraform-provider-proxmox).
 Prerequisites:
 
 - Recent version of Terraform CLI installed on your local machine
-- Proxmox server
+- Proxmox server and [user](https://pve.proxmox.com/wiki/User_Management) with appropriate privileges
+    - all privileges of `PVEAdmin` role + `Sys.Modify` privilege
 - A [VM template](https://pve.proxmox.com/wiki/VM_Templates_and_Clones) (see [Preparing Cloud-Init Templates](https://pve.proxmox.com/wiki/Cloud-Init_Support#_preparing_cloud_init_templates))
 - OSK file matching the VM template OS
 
