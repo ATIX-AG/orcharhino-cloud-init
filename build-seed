@@ -13,7 +13,7 @@ usage() {
     echo "  -n           Host FQDN (default: \"$fqdn\")."
     echo "  -a           Path to YAML answers file."
     echo "  -v           Orcharhino version (e.g. \"6.5\"; latest by default)"
-    echo "  -p           Root user password (default: \"$rootpw\")."
+    echo "  -p           Password for default 'tux' user (default: \"$rootpw\")"
     echo "  -s           Path to SSH public key file (default: \"$(ls -1 $HOME/.ssh/id_*.pub | head -n1)\")."
     echo "  -f           Install Foreman."
     echo "  -k           Install Foreman/Katello."

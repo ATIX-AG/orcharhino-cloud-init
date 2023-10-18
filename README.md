@@ -83,6 +83,9 @@ Connect to instance and check the installation progress in the journal:
 $ ssh -F qemu/local/ssh_config orcharhino
 [tux@rhino ~]$ journalctl -f
 ```
+> **NOTE**
+> The deployed public SSH key is `ls -1 ~/.ssh/id_*.pub | head -n1`.
+> Password authentication is disabled by default.
 
 Available ports for connection:
 - SSH: 10022 (`$ ssh -p 10022 root@localhost`)
@@ -184,6 +187,7 @@ $ ssh tux@<instance>
 ```
 > **NOTE**
 > The deployed public SSH key is `ls -1 ~/.ssh/id_*.pub | head -n1`.
+> Password authentication is disabled by default.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
@@ -289,6 +293,7 @@ $ ssh -F ./local/ssh-config orcharhino
 ```
 > **NOTE**
 > The deployed public SSH key is `ls -1 ~/.ssh/id_*.pub | head -n1`.
+> Password authentication is disabled by default.
 
 Destroy deployed infrastructure and clean up resources using Terraform:
 ```
