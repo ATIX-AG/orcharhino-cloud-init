@@ -11,7 +11,8 @@ This repository provides convenient ways to install orcharhino or Foreman
 
 For orcharhino, an orcharhino subscription key (OSK) file is mandatory that
 matches the desired host OS. This is not needed for Foreman (+Katello)
-installation.
+installation. In addition, you need an URL to the installer (check your
+subscription mail for "downloading orcharhino installer manually").
 
 For orcharhino, an "answers" file is optional that configures the installer.
 This allows an automatic installation without manual interaction in the web UI
@@ -33,13 +34,13 @@ to fill your brand new orcharhino instance with content.
 For automatic installation of orcharhino, invoke `./build-seed` with
 answers file parameter:
 ```
-$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
+$ ./build-seed -o ~/alma8.osk -i https://... -a ./answers-default.yaml
 ```
 You can configure your installation in the `./answers-default.yaml` file.
 
 To launch web UI installer, do not provide answers file parameter:
 ```
-$ ./build-seed -o ~/alma8.osk
+$ ./build-seed -o ~/alma8.osk -i https://...
 ```
 
 
@@ -63,7 +64,7 @@ $ ./build-seed -k
 To start local QEMU instance with interactive orcharhino web UI installer, run:
 ```
 $ ./qemu/10-get-generic-image.sh alma
-$ ./build-seed -o ~/alma8.osk
+$ ./build-seed -o ~/alma8.osk -i https://...
 $ ./qemu/30-create-snapshot.sh alma
 $ ./qemu/50-run-qemu.sh
 ```
@@ -73,7 +74,7 @@ Alternatively, log in via SSH and check for the URL to the installer in the jour
 To start local QEMU instance without interactive installer, run:
 ```
 $ ./qemu/10-get-generic-image.sh alma
-$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
+$ ./build-seed -o ~/alma8.osk -i https://... -a ./answers-default.yaml
 $ ./qemu/30-create-snapshot.sh alma
 $ ./qemu/50-run-qemu.sh
 ```
@@ -104,7 +105,7 @@ Available ports for connection:
 Provide the image on Proxmox server (a direct download on the server is probably
 faster) and `user-data`/`meta-data` files:
 ```
-$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
+$ ./build-seed -o ~/alma8.osk -i https://... -a ./answers-default.yaml
 $ ./qemu/10-get-generic-image.sh alma
 $ scp ./qemu/images/alma-generic-image.qcow2 proxmox:/var/lib/vz/images/
 $ scp ./{user,meta}-data proxmox:/var/lib/vz/snippets/
@@ -164,7 +165,7 @@ Prerequisites:
 
 Generate `user-data`/`meta-data` file:
 ```
-$ ./build-seed -o ~/alma8.osk -a ./answers-default.yaml
+$ ./build-seed -o ~/alma8.osk -i https://... -a ./answers-default.yaml
 ```
 
 Customize variables in `terraform.tfvars` according to your needs:
@@ -228,7 +229,7 @@ Clone: 100% done.
 
 Generate seed ISO and copy it to ESXi host:
 ```
-$ ./build-seed -o ~/alma8.osk [-a ./answers-default.yaml]
+$ ./build-seed -o ~/alma8.osk -i https://... [-a ./answers-default.yaml]
 $ scp ./seed.iso root@192.168.145.4:/vmfs/volumes/57f5ee0e-329bfdc1-2056-002590e5da3a/cloud-init-images/seed-alma8.iso
 ```
 
@@ -244,7 +245,7 @@ Create a VM in VMware (with at least minimal system requirements) and add:
 Generate `user-data` file and upload it under "EC2 > Instances > Launch an
 instance > Advanced details > User data" when creating a new instance:
 ```
-$ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
+$ ./build-seed -o ~/alma8.osk -i https://... -a ./answers-default-aws.yaml
 ```
 
 
@@ -265,7 +266,7 @@ Prerequisites:
 
 Generate `user-data` file:
 ```
-$ ./build-seed -o ~/alma8.osk -a ./answers-default-aws.yaml
+$ ./build-seed -o ~/alma8.osk -i https://... -a ./answers-default-aws.yaml
 ```
 
 Customize variables in `terraform.tfvars` according to your needs:

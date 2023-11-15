@@ -47,7 +47,6 @@ write_files: $ANSWERS_FILE
     TTYVHangup=yes
   path: /etc/systemd/system/or-installation.service
 runcmd:
-  - test ${OR_VERSION} -ge 65 && curl -o /root/install_orcharhino.sh https://occ.orcharhino.com/pulp/content/ATIX/Consumer/CV_orcharhino_Installation/custom/orcharhino_Installation/orcharhino_latest_Installation/install_orcharhino.sh
-  - test ${OR_VERSION} -lt 65 && curl -o /root/install_orcharhino.sh https://acc-pub.atix.de/orcharhino_installer/latest/install_orcharhino.sh
+  - curl -o /root/install_orcharhino.sh ${OR_INSTALLER_URL}
   - test -e /root/answers.yaml && systemctl start --no-block or-installation.service || systemctl start --no-block or-installation-webui.service
   - setenforce 0

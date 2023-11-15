@@ -4,18 +4,19 @@
 # Published under the GNU Public Licence 3
 
 usage() {
-    echo "Usage:  $(basename $0) -o OSK [-n FQDN] [-a ANSWERSFILE] [-v VERSION] [-p PASS] [-s SSHPUBKEY]"
+    echo "Usage:  $(basename $0) -o OSK -i INSTALLERURL [-n FQDN] [-a ANSWERSFILE] [-v VERSION] [-p PASS] [-s SSHPUBKEY]"
     echo "        $(basename $0) -f [-n FQDN]"
     echo "        $(basename $0) -k [-n FQDN]"
     echo
     echo "Options:"
     echo "  -o           Path to OSK file."
+    echo "  -i           URL to orcharhino installer (check your subscription mail from ATIX for \"downloading orcharhino installer manually\")."
     echo "  -n           Host FQDN (default: \"$fqdn\")."
     echo "  -a           Path to YAML answers file."
     echo "  -v           Orcharhino version (e.g. \"6.5\"; latest by default)"
     echo "  -p           Password for default 'tux' user (default: \"$rootpw\")"
     echo "  -s           Path to SSH public key file (default: \"$(ls -1 $HOME/.ssh/id_*.pub | head -n1)\")."
-    echo "  -f           Install Foreman."
+    echo "  -f           Install Foreman (default)."
     echo "  -k           Install Foreman/Katello."
     echo "  -h           This help."
     exit 0
@@ -26,8 +27,10 @@ rootpw="linux"
 sshpubfile=$(ls -1 $HOME/.ssh/id_*.pub | head -n1)
 orversion=
 scriptdir=$(dirname $0)
+installerurl=
+flavor="foreman"
 
-while getopts "fhko:n:a:v:p:s:" o; do
+while getopts "fhko:i:n:a:v:p:s:" o; do
     case "${o}" in
         h)
             usage
@@ -35,6 +38,9 @@ while getopts "fhko:n:a:v:p:s:" o; do
         o)
             oskfile="${OPTARG}"
             flavor="orcharhino"
+            ;;
+        i)
+            installerurl="${OPTARG}"
             ;;
         n)
             fqdn="${OPTARG}"
@@ -80,6 +86,12 @@ if [[ "$flavor" == "orcharhino" ]]; then
   path: /root/answers.yaml
   permissions: '0644'"
     fi
+
+    if [[ "x$installerurl" == "x" ]]; then
+        echo "Please provide installer URL (see '$(basename $0) --help')."
+        exit 1
+    fi
+    OR_INSTALLER_URL="$installerurl"
 fi
 HASHED_PASSWD=$(openssl passwd -6 -salt $(openssl rand -hex 6) $rootpw)
 if [[ -r "$sshpubfile" ]]; then
@@ -89,10 +101,6 @@ fi
 FQDN=$fqdn
 if [[ ! "x$orversion" == "x" ]]; then
     OR_VERSION_OPTION="--or-version=$orversion"
-    OR_VERSION=$(tr -d '.' <<< "$orversion")
-else
-    # we want latest version, however this is always > 65 (see `user-data.orcharhino.skel`)
-    OR_VERSION=10000
 fi
 
 eval "cat > meta-data <<EOF
